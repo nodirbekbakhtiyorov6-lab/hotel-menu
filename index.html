@@ -58,7 +58,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Hero Header */
         .hero-header {
             position: relative;
             height: 230px;
@@ -142,7 +141,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* Grid Services */
         .services-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -165,9 +163,7 @@
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
         }
 
-        .grid-card:active {
-            transform: scale(0.96);
-        }
+        .grid-card:active { transform: scale(0.96); }
 
         .grid-card.featured {
             grid-row: span 2;
@@ -190,7 +186,6 @@
         .featured .svg-icon { width: 56px; height: 56px; }
         .card-title { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
 
-        /* Screens Transition */
         .sub-screen {
             display: none;
             animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -218,7 +213,6 @@
 
         .back-btn:active { transform: scale(0.95); }
 
-        /* Categories Bar */
         .category-tags {
             display: flex;
             gap: 10px;
@@ -249,7 +243,6 @@
             box-shadow: 0 4px 18px var(--accent-gold-glow);
         }
 
-        /* Products Grid */
         .products-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -323,7 +316,6 @@
             font-family: inherit;
         }
 
-        /* Floating Cart Bar */
         .cart-bar {
             position: fixed;
             bottom: 0;
@@ -352,7 +344,6 @@
 
         .btn-submit:active { transform: scale(0.98); }
 
-        /* Bottom Sheet Cart Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -480,7 +471,6 @@
             <div class="hotel-name">The Tower</div>
         </div>
 
-        <!-- MAIN GRID -->
         <div id="screen-main" class="services-grid">
             <div class="grid-card" onclick="showToast('Services coming soon', 'ℹ️')">
                 <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
@@ -508,11 +498,9 @@
             </div>
         </div>
 
-        <!-- MENU SCREEN -->
         <div id="screen-menu" class="sub-screen">
             <button class="back-btn" onclick="openMainScreen()">← <span data-i18n="back">Back</span></button>
 
-            <!-- CATEGORY TAGS -->
             <div class="category-tags">
                 <button class="tag-btn active" onclick="switchCategory('Soup', this)">Soup</button>
                 <button class="tag-btn" onclick="switchCategory('Salad', this)">Salad</button>
@@ -520,10 +508,7 @@
                 <button class="tag-btn" onclick="switchCategory('Main', this)">Main course</button>
             </div>
 
-            <!-- PRODUCTS GRID -->
-            <div class="products-grid" id="productsGrid">
-                <!-- Dynamic Content -->
-            </div>
+            <div class="products-grid" id="productsGrid"></div>
 
             <div class="comment-box">
                 <textarea id="commentInput" placeholder="Add comment or special request..."></textarea>
@@ -531,12 +516,10 @@
         </div>
     </div>
 
-    <!-- CART BAR -->
     <div class="cart-bar">
         <button class="btn-submit" id="orderBtn" onclick="handleCartClick()" data-i18n="cart_empty">View Cart</button>
     </div>
 
-    <!-- CART MODAL -->
     <div class="modal-overlay" id="cartModal">
         <div class="modal-content">
             <div class="modal-drag-indicator"></div>
@@ -544,9 +527,7 @@
                 <div class="modal-title" data-i18n="your_cart">Your Cart</div>
                 <button class="close-btn" onclick="closeCartModal()">✕</button>
             </div>
-            <div id="cartItemsList">
-                <!-- Cart Items -->
-            </div>
+            <div id="cartItemsList"></div>
             <div style="margin-top: 24px;">
                 <button class="btn-submit" onclick="sendOrder()" data-i18n="send_order">Send Order</button>
             </div>
