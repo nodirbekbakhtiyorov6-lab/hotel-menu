@@ -10,7 +10,10 @@
     <meta http-equiv="Expires" content="0">
 
     <title>The Tower Hotel</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    
     <style>
         :root {
             --bg-body: #0b0f17;
@@ -483,17 +486,17 @@
                 <div class="card-title" data-i18n="menu">Menu</div>
             </div>
 
-            <div class="grid-card" onclick="showToast('Calling reception...', '📞')">
+            <div class="grid-card" onclick="sendServiceNotification('Reception call requested')">
                 <svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 <div class="card-title" data-i18n="reception">Reception</div>
             </div>
 
-            <div class="grid-card" onclick="showToast('Taxi request sent', '🚖')">
+            <div class="grid-card" onclick="sendServiceNotification('Taxi requested')">
                 <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 12 10s-6.7.6-8.5 1.1C2.7 11.3 2 12.1 2 13v3c0 .6.4 1 1 1h2m2 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0m8 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0M5 10l2-5h10l2 5"/></svg>
                 <div class="card-title" data-i18n="taxi">Call a Taxi</div>
             </div>
 
-            <div class="grid-card" onclick="showToast('Report screen coming soon', '⚠️')">
+            <div class="grid-card" onclick="sendServiceNotification('Problem reported from room')">
                 <svg class="svg-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4m0 4h.01"/></svg>
                 <div class="card-title" data-i18n="report">Report Problem</div>
             </div>
@@ -530,7 +533,7 @@
             </div>
             <div id="cartItemsList"></div>
             <div style="margin-top: 24px;">
-                <button class="btn-submit" onclick="sendOrder()" data-i18n="send_order">Send Order</button>
+                <button class="btn-submit" id="sendBtn" onclick="sendOrder()" data-i18n="send_order">Send Order</button>
             </div>
         </div>
     </div>
@@ -538,6 +541,12 @@
     <script>
         const BOT_TOKEN = "8932643761:AAH80RD5-i-P1sksa9t-3WS368fNUdeE0ZM";
         const CHAT_ID = "-1003768428141";
+
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
 
         const menuData = {
             Soup: [
@@ -568,7 +577,7 @@
             en: { services: "Services", menu: "Menu", reception: "Reception", taxi: "Call a Taxi", report: "Report Problem", back: "Back", cart_empty: "View Cart", placeholder: "Add comment or special request...", your_cart: "Your Cart", send_order: "Send Order", cat_Soup: "Soup", cat_Salad: "Salad", cat_Pastas: "Pastas", cat_Main: "Main course" },
             ru: { services: "Услуги", menu: "Меню", reception: "Ресепшн", taxi: "Заказать такси", report: "Проблема", back: "Назад", cart_empty: "Корзина", placeholder: "Добавьте комментарий к заказу...", your_cart: "Ваша Корзина", send_order: "Отправить заказ", cat_Soup: "Супы", cat_Salad: "Салаты", cat_Pastas: "Паста", cat_Main: "Горячие блюда" },
             uz: { services: "Xizmatlar", menu: "Menu", reception: "Qabulxona", taxi: "Taksi chaqirish", report: "Muammo", back: "Orqaga", cart_empty: "Savat", placeholder: "Izoh yoki maxsus so'rov qoldiring...", your_cart: "Sizning Savatingiz", send_order: "Buyurtmani yuborish", cat_Soup: "Shorvalar", cat_Salad: "Salatlar", cat_Pastas: "Pastalar", cat_Main: "Asosiy taomlar" },
-            kk: { services: "Қызметтер", menu: "Мәзір", reception: "Ресепшн", taxi: "Такси шақыру", report: "Муаммо", back: "Артқа", cart_empty: "Себет", placeholder: "Тапсырысқа пікір қосыңыз...", your_cart: "Сіздің себетіңіз", send_order: "Тапсырысты жіберу", cat_Soup: "Сорпалар", cat_Salad: "Салаттар", cat_Pastas: "Паста", cat_Main: "Негізгі тағамдар" }
+            kk: { services: "Қызметтер", menu: "Мәзір", reception: "Ресепшн", taxi: "Такси шақыру", report: "Проблема", back: "Артқа", cart_empty: "Себет", placeholder: "Тапсырысқа пікір қосыңыз...", your_cart: "Сіздің себетіңіз", send_order: "Тапсырысты жіберу", cat_Soup: "Сорпалар", cat_Salad: "Салаттар", cat_Pastas: "Паста", cat_Main: "Негізгі тағамдар" }
         };
 
         window.onload = function() {
@@ -590,7 +599,7 @@
                     top: 24px;
                     left: 50%;
                     transform: translateX(-50%) translateY(-100px);
-                    background: rgba(15, 23, 42, 0.9);
+                    background: rgba(15, 23, 42, 0.95);
                     backdrop-filter: blur(16px);
                     -webkit-backdrop-filter: blur(16px);
                     color: #fff;
@@ -770,8 +779,26 @@
             } catch { return text; }
         }
 
+        async function sendServiceNotification(serviceName) {
+            const msg = `🔔 <b>ЗАПРОС УСЛУГИ</b>\n🏨 <b>Номер:</b> ${roomNum}\n📌 <b>Услуга:</b> ${serviceName}`;
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'HTML' })
+                });
+                showToast("Запрос отправлен!", "📞");
+            } catch {
+                showToast("Ошибка отправки", "❌");
+            }
+        }
+
         async function sendOrder() {
             if (cart.length === 0) return;
+
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+            sendBtn.innerText = "Отправка...";
 
             const comment = document.getElementById('commentInput').value.trim();
             let msg = `🍽 <b>НОВЫЙ ЗАКАЗ В НОМЕР</b>\n🏨 <b>Номер:</b> ${roomNum}\n\n📋 <b>Состав заказа:</b>\n`;
@@ -790,35 +817,36 @@
                 msg += `💬 <b>Комментарий:</b> ${comment}\n🇷🇺 <b>Перевод:</b> <i>${tr}</i>\n`;
             }
 
-            msg += `\n⏳ <b>Статус:</b> Ожидает подтверждения`;
+            msg += `\n⏳ <b>Статус:</b> Ожидает доставки`;
 
             const payload = {
                 chat_id: CHAT_ID,
                 text: msg,
-                parse_mode: 'HTML',
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "✅ Принять заказ", callback_data: "accept_order" }
-                        ]
-                    ]
-                }
+                parse_mode: 'HTML'
             };
 
             try {
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                showToast("Заказ отправлен!", "🎉");
-                cart = [];
-                document.getElementById('commentInput').value = '';
-                closeCartModal();
-                updateCartBar();
-            } catch {
-                showToast("Ошибка отправки заказа", "❌");
+                if (response.ok) {
+                    showToast("Заказ отправлен!", "🎉");
+                    cart = [];
+                    document.getElementById('commentInput').value = '';
+                    closeCartModal();
+                    updateCartBar();
+                    if (tg) tg.close();
+                } else {
+                    showToast("Ошибка Telegram API", "❌");
+                }
+            } catch (err) {
+                showToast("Ошибка соединения", "❌");
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerText = i18n[currentLang].send_order;
             }
         }
     </script>
